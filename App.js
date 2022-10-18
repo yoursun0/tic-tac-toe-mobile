@@ -124,14 +124,14 @@ export default function App() {
 
   const gameEnd = (player) => {
     if (player == 't') {
-      Alert.alert(`It is a tie`, `今次打和啦！SUPER`, [
+      Alert.alert(`It is a TIE`, `Everyone are happy~ SUPER!`, [
         {
           text: "Restart",
           onPress: resetGame,
         },
       ]);
     } else {
-      Alert.alert(`Huraay`, `${(player == 'x') ? '貓寶寶' : 'Coffee'} won!`, [
+      Alert.alert(`Huraay! Player `, `${player.toUpperCase()} won!`, [
         {
           text: "Restart",
           onPress: resetGame,
@@ -259,7 +259,7 @@ export default function App() {
             position: "absolute",
             top: 150,
           }}>
-          Current Turn: {(currentTurn == 'x') ? '貓寶寶' : 'Coffee'}
+          Current Turn: {currentTurn.toUpperCase()}
         </Text>
         <View style={styles.map}>
           {map.map((row, rowIndex) => (
