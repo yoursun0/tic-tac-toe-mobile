@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, Alert } from 'react-native';
 import bg from '../assets/board.png'
 import Cell from '../components/Cell'
 import Gear from '../components/Gear'
@@ -11,15 +11,15 @@ const copyArray = (original) => {
     return copy;
 }
 
-const Game = ({gameMode, p1Icon, p2Icon}) => {
-  
+const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
+
     const emptyMap = [
         ['', '', ''], // 1st row
         ['', '', ''], // 2nd row
         ['', '', ''], // 3rd row
     ];
     const [map, setMap] = useState(emptyMap);
-    const [currentTurn, setCurrentTurn] = useState('x');
+    const [currentTurn, setCurrentTurn] = useState(initPlayer);
 
     useEffect(() => {
         const winner = getWinner(map);
@@ -130,7 +130,7 @@ const Game = ({gameMode, p1Icon, p2Icon}) => {
                 },
             ]);
         } else {
-            Alert.alert(`Huraay! Player `, `${player.toUpperCase()} won!`, [
+            Alert.alert(`Huraay!`, `Player ${player == 'x' ? '1' : '2'} won!`, [
                 {
                     text: "Restart",
                     onPress: resetGame,
@@ -252,7 +252,9 @@ const Game = ({gameMode, p1Icon, p2Icon}) => {
         <ImageBackground source={bg} style={styles.bg} resizeMode="contain">
             <Gear />
             <Text style={styles.text}>
-                Current Turn: {currentTurn.toUpperCase()}
+                Current Turn:
+                {currentTurn === 'x' && <View><Image style={styles.image} source={p1Icon} resizeMode="contain" /></View>}
+                {currentTurn === 'o' && <View><Image style={styles.image} source={p2Icon} resizeMode="contain" /></View>}
             </Text>
             <View style={styles.map}>
                 {map.map((row, rowIndex) => (
@@ -293,6 +295,13 @@ const styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: "row",
+    },
+    image: {
+        flex: 1,
+        top: 30,
+        width: 55,
+        height: 55,
+        resizeMode: 'contain'
     },
 })
 export default Game;

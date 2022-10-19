@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, ScrollView, SafeAreaView, Text, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import imgSettings from '../assets/settings.png';
 import imgMeow from '../assets/meow.png';
@@ -9,11 +9,11 @@ import imgDog from '../assets/dog-icon.png';
 import imgCircle from '../assets/circle.png';
 import imgCross from '../assets/cross.png';
 
-const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Icon }) => {
+const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Icon, initPlayer, setInitPlayer }) => {
   const navigation = useNavigation()
   return (
-    <View style={styles.modal}>
-      <Image source={imgSettings} resizeMode="contain" />
+    <ScrollView style={styles.modal}>
+      <Image source={imgSettings} style={{marginTop:40}} resizeMode="contain" />
       <Text style={styles.text}>Game Mode</Text>
       <View style={styles.difficulty}>
         <Text
@@ -78,7 +78,29 @@ const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Ic
           Hard
         </Text>
       </View>
-      <Text style={styles.text}>P1 icon</Text>
+      <Text style={styles.text}>Who First</Text>
+      <View style={styles.difficulty}>
+        <Text
+          onPress={() => setInitPlayer("x")}
+          style={[
+
+            styles.button,
+            { backgroundColor: initPlayer === "x" ? "#9999CC" : "#CCCCCC" },
+          ]}
+        >
+          Player 1
+        </Text>
+        <Text
+          onPress={() => setInitPlayer("o")}
+          style={[
+            styles.button,
+            { backgroundColor: initPlayer === "o" ? "#9999CC" : "#CCCCCC" },
+          ]}
+        >
+          Player 2
+        </Text>
+      </View>
+      <Text style={styles.text}>P1 token</Text>
       <View style={styles.difficulty}>
         <TouchableOpacity
           onPress={() => setP1Icon(imgCross)}
@@ -130,7 +152,7 @@ const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Ic
         </TouchableOpacity>
       </View>
       
-      <Text style={styles.text}>P2 icon</Text>
+      <Text style={styles.text}>P2 token</Text>
       <View style={styles.difficulty}>
         <TouchableOpacity
           onPress={() => setP2Icon(imgCross)}
@@ -181,20 +203,18 @@ const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Ic
           <Image source={imgCoffee} style={styles.image} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('local')}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <View style={styles.return}>
-          <Text style={styles.buttonText}>Return to Game</Text>
+          <Text style={styles.buttonText}>OK</Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   modal: {
-    width: "90%",
-    top: -200,
-    aspectRatio: 1.1,
+    width: "90%"
   },
   text: {
     fontSize: 20,
@@ -227,6 +247,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     margin: 10,
+    marginBottom: 80,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,

@@ -6,10 +6,6 @@ import { TransitionPresets } from '@react-navigation/stack'
 import HomeView from './views/HomeView';
 import SettingView from './views/SettingView';
 import Game from './views/Game';
-import imgMeow from './assets/meow.png';
-import imgCoffee from './assets/coffee.png';
-import imgCat from './assets/cat-icon.png';
-import imgDog from './assets/dog-icon.png';
 import imgCircle from './assets/circle.png';
 import imgCross from './assets/cross.png';
 
@@ -31,6 +27,7 @@ export default function App() {
         gameMode={gameMode}
         p1Icon={p1Icon}
         p2Icon={p2Icon}
+        initPlayer={initPlayer}
       />
     </View>
   )
@@ -44,11 +41,14 @@ export default function App() {
         p2Icon={p2Icon}
         setP1Icon={setP1Icon}
         setP2Icon={setP2Icon}
+        initPlayer={initPlayer}
+        setInitPlayer={setInitPlayer}
       />
     </View>
   )
 
   const [gameMode, setGameMode] = useState("LOCAL"); // LOCAL, EASY, MEDIUM, HARD;
+  const [initPlayer, setInitPlayer] = useState('x');
   const [p1Icon, setP1Icon] = useState(imgCross);
   const [p2Icon, setP2Icon] = useState(imgCircle);
 
