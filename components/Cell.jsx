@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet, Pressable, Image } from 'react-native'
-import imgCross from '../../assets/cross.png'
-import imgCircle from '../../assets/circle.png'
-import imgMeow from '../../assets/meow.png'
-import imgCoffee from '../../assets/coffee.png'
+import imgCross from '../assets/cross.png'
+import imgCircle from '../assets/circle.png'
+import imgMeow from '../assets/meow.png'
+import imgCoffee from '../assets/coffee.png'
 
 const Cell = (props) => {
     const { cell, onPress } = props;
