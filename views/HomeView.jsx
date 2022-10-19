@@ -2,13 +2,19 @@ import React from 'react'
 import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import imgTitle from '../assets/title-text.png';
-import imgIcon from '../assets/meow.png'
+import imgCircle from '../assets/circle.png';
+import imgCross from '../assets/cross.png';
 
-const HomeView = () => {
-  const navigation = useNavigation()
+const HomeView = ({p1Icon, p2Icon}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.homepage}>
-      <Image source={imgIcon} resizeMode="contain" />
+      <View style={styles.icons}>
+        <Image source={imgCross} resizeMode="contain" />
+        <Image source={imgCircle} resizeMode="contain" />
+        <Image source={p1Icon} resizeMode="contain" />
+        <Image source={p2Icon} resizeMode="contain" />
+      </View>
       <Image source={imgTitle} resizeMode="contain" />
       <TouchableOpacity onPress={() => navigation.navigate('local')}>
         <View style={styles.button}>
@@ -29,6 +35,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  icons: {
+    flexDirection: "row",
   },
   button: {
     margin: 10,

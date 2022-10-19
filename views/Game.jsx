@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Alert } from 'react-native';
 import bg from '../assets/board.png'
 import Cell from '../components/Cell'
 import Gear from '../components/Gear'
@@ -11,8 +11,8 @@ const copyArray = (original) => {
     return copy;
 }
 
-const Game = () => {
-
+const Game = ({gameMode, p1Icon, p2Icon}) => {
+  
     const emptyMap = [
         ['', '', ''], // 1st row
         ['', '', ''], // 2nd row
@@ -20,7 +20,6 @@ const Game = () => {
     ];
     const [map, setMap] = useState(emptyMap);
     const [currentTurn, setCurrentTurn] = useState('x');
-    const [gameMode, setGameMode] = useState("LOCAL"); // LOCAL, EASY, MEDIUM, HARD;
 
     useEffect(() => {
         const winner = getWinner(map);
@@ -252,13 +251,7 @@ const Game = () => {
     return (
         <ImageBackground source={bg} style={styles.bg} resizeMode="contain">
             <Gear />
-            <Text style={
-                {
-                    fontSize: 24,
-                    color: "black",
-                    position: "absolute",
-                    top: 150,
-                }}>
+            <Text style={styles.text}>
                 Current Turn: {currentTurn.toUpperCase()}
             </Text>
             <View style={styles.map}>
@@ -269,59 +262,13 @@ const Game = () => {
                                 key={`row-${rowIndex}-col-${columnIndex}`}
                                 cell={cell}
                                 onPress={() => onPress(rowIndex, columnIndex)}
+                                p1Icon={p1Icon}
+                                p2Icon={p2Icon}
                             />
                         ))}
                     </View>
                 ))}
             </View>
-            <View style={styles.buttons}>
-                <Text
-                    onPress={() => setGameMode("LOCAL")}
-                    style={[
-                        styles.button,
-                        { backgroundColor: gameMode === "LOCAL" ? "#9999CC" : "#CCCCCC" },
-                    ]}
-                >
-                    Local
-                </Text>
-                <Text
-                    onPress={() => setGameMode("EASY")}
-                    style={[
-                        styles.button,
-                        {
-                            backgroundColor:
-                                gameMode === "EASY" ? "#9999CC" : "#CCCCCC",
-                        },
-                    ]}
-                >
-                    Easy
-                </Text>
-                <Text
-                    onPress={() => setGameMode("MEDIUM")}
-                    style={[
-                        styles.button,
-                        {
-                            backgroundColor:
-                                gameMode === "MEDIUM" ? "#9999CC" : "#CCCCCC",
-                        },
-                    ]}
-                >
-                    Medium
-                </Text>
-                <Text
-                    onPress={() => setGameMode("HARD")}
-                    style={[
-                        styles.button,
-                        {
-                            backgroundColor:
-                                gameMode === "HARD" ? "#9999CC" : "#CCCCCC",
-                        },
-                    ]}
-                >
-                    Hard
-                </Text>
-            </View>
-
         </ImageBackground>
     )
 }
@@ -337,21 +284,15 @@ const styles = StyleSheet.create({
         width: "90%",
         aspectRatio: 1.1,
     },
+    text: {
+        fontSize: 24,
+        color: "black",
+        position: "absolute",
+        top: 150,
+    },
     row: {
         flex: 1,
         flexDirection: "row",
-    },
-    buttons: {
-        position: "absolute",
-        bottom: 50,
-        flexDirection: "row",
-    },
-    button: {
-        color: "black",
-        margin: 10,
-        fontSize: 16,
-        padding: 10,
-        paddingHorizontal: 15,
     },
 })
 export default Game;

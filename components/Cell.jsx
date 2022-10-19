@@ -1,17 +1,13 @@
 import React from 'react'
 import { View, StyleSheet, Pressable, Image } from 'react-native'
-import imgCross from '../assets/cross.png'
-import imgCircle from '../assets/circle.png'
-import imgMeow from '../assets/meow.png'
-import imgCoffee from '../assets/coffee.png'
 
 const Cell = (props) => {
-    const { cell, onPress } = props;
+    const { cell, onPress, p1Icon, p2Icon } = props;
 
     return (
         <Pressable onPress={() => onPress()} style={styles.cell}>
-            {cell === 'o' && <View><Image source={imgCircle} resizeMode="contain" /></View> }
-            {cell === 'x' && <View><Image source={imgCross} resizeMode="contain" /></View> }
+            {cell === 'x' && <View><Image source={p1Icon} resizeMode="contain" /></View> }
+            {cell === 'o' && <View><Image source={p2Icon} resizeMode="contain" /></View> }
         </Pressable>
     )
 }
