@@ -325,12 +325,6 @@ const Game = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fffdca',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     bg: {
         width: "100%",
         height: "103%",

@@ -1,15 +1,61 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable, ImageBackground, Alert } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TransitionPresets } from '@react-navigation/stack'
+import HomeView from './views/HomeView';
 import Game from './views/Game';
+
+const Stack = createNativeStackNavigator();
+
+function HomeScreen() {
+  return (
+    <View style={styles.container}>
+      <HomeView />
+    </View>
+  );
+}
+
+const MainScreen = () => (
+  <View style={styles.container}>
+    <Game />
+  </View>
+)
+
+const SettingScreen = () => (
+  <View style={styles.container}>
+    <Text>Setting</Text>
+  </View>
+)
 
 export default function App() {
 
   return (
-    <View style={styles.container}>
-      <Game />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{
+        headerShown: false,
+      }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="modal"
+          component={MainScreen}
+          options={{
+            headerShown: true,
+            presentation: 'modal',
+            ...TransitionPresets.ModalPresentationIOS,
+          }}
+        />
+        <Stack.Screen
+          name="setting"
+          component={SettingScreen}
+          options={{
+            headerShown: true,
+            presentation: 'modal',
+            ...TransitionPresets.ModalPresentationIOS,
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -19,31 +65,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffdca',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bg: {
-    width: "100%",
-    height: "103%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  map: {
-    width: "90%",
-    aspectRatio: 1.1,
-  },
-  row: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  buttons: {
-    position: "absolute",
-    bottom: 50,
-    flexDirection: "row",
-  },
-  button: {
-    color: "black",
-    margin: 10,
-    fontSize: 16,
-    padding: 10,
-    paddingHorizontal: 15,
   },
 });
