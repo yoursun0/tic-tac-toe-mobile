@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable, ImageBackground, Alert } from 'react-native';
 import bg from '../assets/board.png'
 import Cell from '../components/Cell'
+import Gear from '../components/Gear'
 
 const copyArray = (original) => {
     const copy = original.map((arr) => {
@@ -250,6 +251,7 @@ const Game = () => {
 
     return (
         <ImageBackground source={bg} style={styles.bg} resizeMode="contain">
+            <Gear />
             <Text style={
                 {
                     fontSize: 24,

@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Pressable, ImageBackground, Alert } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TransitionPresets } from '@react-navigation/stack'
 import HomeView from './views/HomeView';
+import SettingView from './views/SettingView';
 import Game from './views/Game';
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +25,7 @@ const MainScreen = () => (
 
 const SettingScreen = () => (
   <View style={styles.container}>
-    <Text>Setting</Text>
+    <SettingView />
   </View>
 )
 
@@ -37,11 +38,11 @@ export default function App() {
       }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen
-          name="modal"
+          name="local"
           component={MainScreen}
           options={{
-            headerShown: true,
-            presentation: 'modal',
+            headerShown: false,
+            presentation: 'card',
             ...TransitionPresets.ModalPresentationIOS,
           }}
         />

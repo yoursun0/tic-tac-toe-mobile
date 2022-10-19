@@ -10,7 +10,7 @@ const HomeView = () => {
     <View style={styles.homepage}>
       <Image source={imgIcon} resizeMode="contain" />
       <Image source={imgTitle} resizeMode="contain" />
-      <TouchableOpacity onPress={() => navigation.navigate('modal')}>
+      <TouchableOpacity onPress={() => navigation.navigate('local')}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Start Game</Text>
         </View>
