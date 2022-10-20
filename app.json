@@ -2,7 +2,7 @@
   "expo": {
     "name": "tic-tac-toe-mobile",
     "slug": "tic-tac-toe-mobile",
-    "version": "1.1.0",
+    "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.yoursun0.tictactoemobile",
-      "buildNumber": "1.2.0"
+      "buildNumber": "1.4.0"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +28,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.yoursun0.tictactoemobile",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"
