@@ -253,9 +253,11 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
             <Gear />
             <Text style={styles.text}>
                 Current Turn:
-                {currentTurn === 'x' && <View><Image style={styles.image} source={p1Icon} resizeMode="contain" /></View>}
-                {currentTurn === 'o' && <View><Image style={styles.image} source={p2Icon} resizeMode="contain" /></View>}
             </Text>
+            <View style={styles.currentTurn}>
+                {currentTurn === 'x' && <Image style={styles.image} source={p1Icon} />}
+                {currentTurn === 'o' && <Image style={styles.image} source={p2Icon} />}
+            </View>
             <View style={styles.map}>
                 {map.map((row, rowIndex) => (
                     <View key={`row-${rowIndex}`} style={styles.row}>
@@ -286,22 +288,31 @@ const styles = StyleSheet.create({
         width: "90%",
         aspectRatio: 1.1,
     },
-    text: {
+    currentTurn: {
+        position: "absolute",
+        top: 150,
+        left: 250,
+        alignItems: "center",
+        width: "100%",
+        height: 70,
+        flex: 1,
+        flexDirection: "row",
+    },
+    text: {        
         fontSize: 24,
         color: "black",
         position: "absolute",
-        top: 150,
+        top: 170,
+        left: 90,
     },
     row: {
         flex: 1,
         flexDirection: "row",
     },
     image: {
-        flex: 1,
-        top: 30,
         width: 55,
         height: 55,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
 })
 export default Game;

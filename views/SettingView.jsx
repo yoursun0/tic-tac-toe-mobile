@@ -4,10 +4,12 @@ import { useNavigation } from '@react-navigation/native'
 import imgSettings from '../assets/settings.png';
 import imgMeow from '../assets/meow.png';
 import imgCoffee from '../assets/coffee.png';
-import imgCat from '../assets/cat-icon.png';
-import imgDog from '../assets/dog-icon.png';
+import imgCat from '../assets/cat.png';
+import imgDog from '../assets/dog.png';
 import imgCircle from '../assets/circle.png';
 import imgCross from '../assets/cross.png';
+import imgTriangle from '../assets/triangle.png';
+import imgSquare from '../assets/square.png';
 
 const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Icon, initPlayer, setInitPlayer }) => {
   const navigation = useNavigation()
@@ -119,6 +121,24 @@ const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Ic
           <Image source={imgCircle} style={styles.image} />
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => setP1Icon(imgTriangle)}
+          style={[styles.icon, {
+            borderColor: p1Icon === imgTriangle ? "#3333ff" : "#fffdca",
+          }]}
+        >
+          <Image source={imgTriangle} style={styles.image} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setP1Icon(imgSquare)}
+          style={[styles.icon, {
+            borderColor: p1Icon === imgSquare ? "#3333ff" : "#fffdca",
+          }]}
+        >
+          <Image source={imgSquare} style={styles.image} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.difficulty}>
+        <TouchableOpacity
           onPress={() => setP1Icon(imgCat)}
           style={[styles.icon, {
             borderColor: p1Icon === imgCat ? "#3333ff" : "#fffdca",
@@ -151,7 +171,6 @@ const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Ic
           <Image source={imgCoffee} style={styles.image} />
         </TouchableOpacity>
       </View>
-      
       <Text style={styles.text}>P2 token</Text>
       <View style={styles.difficulty}>
         <TouchableOpacity
@@ -170,6 +189,24 @@ const SettingView = ({ gameMode, setGameMode, p1Icon, p2Icon, setP1Icon, setP2Ic
         >
           <Image source={imgCircle} style={styles.image} />
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setP2Icon(imgTriangle)}
+          style={[styles.icon, {
+            borderColor: p2Icon === imgTriangle ? "#ff3333" : "#fffdca",
+          }]}
+        >
+          <Image source={imgTriangle} style={styles.image} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setP2Icon(imgSquare)}
+          style={[styles.icon, {
+            borderColor: p2Icon === imgSquare ? "#ff3333" : "#fffdca",
+          }]}
+        >
+          <Image source={imgSquare} style={styles.image} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.difficulty}>
         <TouchableOpacity
           onPress={() => setP2Icon(imgCat)}
           style={[styles.icon, {
