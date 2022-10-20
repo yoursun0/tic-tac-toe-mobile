@@ -133,12 +133,7 @@ const Game = ({ gameRule, gameMode, p1Icons, p2Icons, initPlayer }) => {
     }
 
     const nextPlayer = (token) => {
-        if (gameRule === 'CLASSIC') {
-            return (token == 'x') ? 'o' : 'x';
-        } else {
-            let player = token[0];
-            return player + Math.floor(step / 2 + 1);
-        }
+        return (token == 'x') ? 'o' : 'x';
     }
 
     const gameEnd = (player) => {
@@ -200,7 +195,7 @@ const Game = ({ gameRule, gameMode, p1Icons, p2Icons, initPlayer }) => {
                     }
                 })
             });
-            console.log("bot turn [step = " + step + ", currentMove = " + currentMove + ", nextMove = " + nextMove + "]");
+            // console.log("bot turn [step = " + step + ", currentMove = " + currentMove + ", nextMove = " + nextMove + "]");
         }
 
         if (gameMode == 'MEDIUM') {
@@ -212,7 +207,6 @@ const Game = ({ gameRule, gameMode, p1Icons, p2Icons, initPlayer }) => {
                 }
                 tempMap[cell.row][cell.col] = nextMove;
                 if (getWinner(tempMap) == 'x') {
-                    console.log("bot using " + currentMove + " to defend " + nextMove + " at [" + cell.row + "," + cell.col + "]");
                     chosenOption = cell;
                 }
             });
@@ -226,17 +220,16 @@ const Game = ({ gameRule, gameMode, p1Icons, p2Icons, initPlayer }) => {
                 tempMap[cell.row][cell.col] = currentMove;
                 if (getWinner(tempMap) == 'o') {
                     chosenOption = cell;
-                    console.log("bot attacking " + currentMove + " at [" + cell.row + "," + cell.col + "]");
                 }
             });
         } else if (gameMode == 'HARD') {
-            chosenOption = minimax(map, 'o', 6).position;
+            chosenOption = minimax(map, 'o', step, 6).position;
         }
 
         onPress(chosenOption.row, chosenOption.col);
     }
 
-    const minimax = (board, player, cpu) => {
+    const minimax = (board, player, step, cpu) => {
         if (getWinner(board) == 'x') {
             return { score: -1 * (cpu + 1) };
         } else if (getWinner(board) == 'o') {
@@ -252,10 +245,26 @@ const Game = ({ gameRule, gameMode, p1Icons, p2Icons, initPlayer }) => {
             return { score: 0, position: possiblePositions[Math.floor(Math.random() * possiblePositions.length)] }
         }
 
+        let currentMove = player + Math.floor(step / 2 + 1);
+        let myPosition;
+
+        if (gameRule == 'LIMITED') {
+            map.forEach((row, rowNum) => {
+                row.forEach((cell, colNum) => {
+                    if (cell === currentMove) {
+                        myPosition = { row: rowNum, col: colNum };
+                    }
+                })
+            });
+        }
+
         possiblePositions.forEach((cell) => {
-            const tempBoard = copyArray(board);                
-            tempBoard[cell.row][cell.col] = player;
-            const tempScore = minimax(tempBoard, nextPlayer(player), cpu - 1).score;
+            const tempBoard = copyArray(board);
+            if (gameRule == 'LIMITED' && myPosition) {
+                tempBoard[myPosition.row][myPosition.col] = '';
+            }                
+            tempBoard[cell.row][cell.col] = currentMove;
+            const tempScore = minimax(tempBoard, nextPlayer(player), (step + 1) % 6, cpu - 1).score;
             moves.push({ score: tempScore, position: cell });
         })
 
