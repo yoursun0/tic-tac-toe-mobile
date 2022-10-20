@@ -7,8 +7,8 @@ const Cell = (props) => {
     if (gameRule === "CLASSIC") {
         return (
             <Pressable onPress={() => onPress()} style={styles.cell}>
-                {cell === 'x' && <View><Image source={p1Icons[0]} resizeMode="contain" /></View>}
-                {cell === 'o' && <View><Image source={p2Icons[0]} resizeMode="contain" /></View>}
+                {cell[0] === 'x' && <View><Image source={p1Icons[0]} resizeMode="contain" /></View>}
+                {cell[0] === 'o' && <View><Image source={p2Icons[0]} resizeMode="contain" /></View>}
             </Pressable>
         )
     } else {
