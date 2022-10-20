@@ -11,7 +11,7 @@ const copyArray = (original) => {
     return copy;
 }
 
-const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
+const Game = ({ gameRule, gameMode, p1Icons, p2Icons, initPlayer }) => {
 
     const emptyMap = [
         ['', '', ''], // 1st row
@@ -19,39 +19,52 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
         ['', '', ''], // 3rd row
     ];
     const [map, setMap] = useState(emptyMap);
-    const [currentTurn, setCurrentTurn] = useState(initPlayer);
+    const [currentPlayer, setCurrentPlayer] = useState(initPlayer);
+    const [step, setStep] = useState(0);
 
     useEffect(() => {
         const winner = getWinner(map);
         if (winner) {
             gameEnd(winner);
-        } else if (currentTurn == 'o' && gameMode !== "LOCAL") {
+        } else if (currentPlayer == 'o' && gameMode !== "LOCAL") {
             botTurn();
         }
-    }, [map, currentTurn, gameMode]);
+    }, [map, currentPlayer, gameMode]);
 
     const onPress = (rowIndex, columnIndex) => {
-
         if (map[rowIndex][columnIndex] != '') {
             Alert.alert("Position already occupied");
             return;
         }
 
+        console.log("Pressing [" + rowIndex + "," + columnIndex + "], step = " + step + ", current move =" + currentPlayer + Math.floor(step / 2 + 1));
         setMap((existingMap) => {
-            const updatedMap = [...existingMap]
-            updatedMap[rowIndex][columnIndex] = currentTurn;
+            const updatedMap = [...existingMap];
+            const currentMove = currentPlayer + Math.floor(step / 2 + 1);
+            map.forEach((row, rowNum) => {
+                row.forEach((cell, colNum) => {
+                    if (cell === currentMove) {
+                        updatedMap[rowNum][colNum] = '';
+                    }
+                })
+            });
+            updatedMap[rowIndex][columnIndex] = currentMove;
             return updatedMap;
         });
 
-
-        setCurrentTurn(currentTurn === 'x' ? 'o' : 'x');
+        if (step == 5) {
+            setStep(0);
+        } else {
+            setStep(step + 1);
+        }
+        setCurrentPlayer(currentPlayer === 'x' ? 'o' : 'x');
     };
 
     const getWinner = (currentMap) => {
         // check rows
         for (let i = 0; i < 3; i++) {
-            const isRowXwinning = currentMap[i].every(cell => cell == 'x')
-            const isRowOwinning = currentMap[i].every(cell => cell == 'o')
+            const isRowXwinning = currentMap[i].every(cell => cell[0] == 'x')
+            const isRowOwinning = currentMap[i].every(cell => cell[0] == 'o')
 
             if (isRowXwinning) {
                 return "x"
@@ -67,10 +80,10 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
             let isColumnOWinner = true;
 
             for (let row = 0; row < 3; row++) {
-                if (currentMap[row][col] != 'x') {
+                if (currentMap[row][col][0] != 'x') {
                     isColumnXWinner = false;
                 }
-                if (currentMap[row][col] != 'o') {
+                if (currentMap[row][col][0] != 'o') {
                     isColumnOWinner = false;
                 }
             }
@@ -90,16 +103,16 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
         let isDiagnoal2XWinning = true;
 
         for (let i = 0; i < 3; i++) {
-            if (currentMap[i][i] != 'o') {
+            if (currentMap[i][i][0] != 'o') {
                 isDiagnoal1OWinning = false;
             }
-            if (currentMap[i][i] != 'x') {
+            if (currentMap[i][i][0] != 'x') {
                 isDiagnoal1XWinning = false;
             }
-            if (currentMap[i][2 - i] != 'o') {
+            if (currentMap[i][2 - i][0] != 'o') {
                 isDiagnoal2OWinning = false;
             }
-            if (currentMap[i][2 - i] != 'x') {
+            if (currentMap[i][2 - i][0] != 'x') {
                 isDiagnoal2XWinning = false;
             }
         }
@@ -117,8 +130,13 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
         }
     }
 
-    const nextPlayer = (player) => {
-        return (player == 'x') ? 'o' : 'x';
+    const nextPlayer = (token) => {
+        if (gameRule === 'CLASSIC') {
+            return (token == 'x') ? 'o' : 'x';
+        } else {
+            let player = token[0];
+            return player + Math.floor(step / 2 + 1);
+        }
     }
 
     const gameEnd = (player) => {
@@ -141,6 +159,8 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
 
     const resetGame = () => {
         setMap(emptyMap);
+        setCurrentPlayer(initPlayer);
+        setStep(0);
     }
 
     const emptySquares = (currentMap) => {
@@ -254,9 +274,9 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
             <Text style={styles.text}>
                 Current Turn:
             </Text>
-            <View style={styles.currentTurn}>
-                {currentTurn === 'x' && <Image style={styles.image} source={p1Icon} />}
-                {currentTurn === 'o' && <Image style={styles.image} source={p2Icon} />}
+            <View style={styles.currentPlayer}>
+                {currentPlayer === 'x' && <Image style={styles.image} source={(gameRule == 'LIMITED') ? p1Icons[Math.floor(step / 2 + 1)] : p1Icons[0]} />}
+                {currentPlayer === 'o' && <Image style={styles.image} source={(gameRule == 'LIMITED') ? p2Icons[Math.floor(step / 2 + 1)] : p2Icons[0]} />}
             </View>
             <View style={styles.map}>
                 {map.map((row, rowIndex) => (
@@ -266,8 +286,9 @@ const Game = ({ gameMode, p1Icon, p2Icon, initPlayer }) => {
                                 key={`row-${rowIndex}-col-${columnIndex}`}
                                 cell={cell}
                                 onPress={() => onPress(rowIndex, columnIndex)}
-                                p1Icon={p1Icon}
-                                p2Icon={p2Icon}
+                                gameRule={gameRule}
+                                p1Icons={p1Icons}
+                                p2Icons={p2Icons}
                             />
                         ))}
                     </View>
@@ -288,7 +309,7 @@ const styles = StyleSheet.create({
         width: "90%",
         aspectRatio: 1.1,
     },
-    currentTurn: {
+    currentPlayer: {
         position: "absolute",
         top: 150,
         left: 250,
@@ -298,7 +319,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
     },
-    text: {        
+    text: {
         fontSize: 24,
         color: "black",
         position: "absolute",
